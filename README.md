@@ -1,24 +1,56 @@
 # Nosana Security Inspector launcher
 
-Experimental password-protected delivery. This repository contains the encrypted
-application and public decryption bootstrap, not the private development history.
-Password holders can read/copy the application using `--show-source`.
+Experimental version **0.1.0-dev.2**. The private application is password-encrypted;
+its decryption bootstrap is public. Password holders can read and copy the complete
+application source with `--show-source`; no GitHub credentials are required.
 
-This candidate has known coverage gaps and cannot certify a host as clean.
-A private repository and a sharing password are separate access mechanisms.
-No GitHub credentials are needed to download this launcher.
+This candidate reports explicit coverage gaps. It cannot certify a host as clean.
+175 tests passed; real-engine YARA, an official memory fixture, harmless kernel
+taints and isolated encrypted-filesystem checks are recorded in the application.
+Known-positive rootkit detection and safe automatic job maintenance remain unvalidated.
 
-Use Bash, Python3.10+ on Linuxx86_64, curl or wget, and sudo. Download the complete
-file, check its SHA256 from `releases/0.1.0-dev.1/build.json`, then execute it.
-Do not execute an HTTP response directly as it streams. The launcher prompts for
-the sharing password unless `NSI_PASSWORD` is set; that value is removed before
-the installed inspector starts. No passwords or recovery identities are published.
+## One-paste launch
 
-Detailed reports are encrypted to the operator-provisioned recipient and remain
-on the inspected host. Keep the recovery private key on a trusted review computer.
+Requires Linux x86_64, Bash, Python 3.10+, systemd, sudo, sha256sum, and curl or wget.
+First provision your **public** age recipient at
+`/etc/nosana-security-inspector/recipient.txt` (root-owned, mode0644); keep its
+private recovery identity on your trusted review computer.
 
-Default run: `inspect --deep --detach`. Source review: `--show-source`.
-Lifecycle enrollment is separate and requires explicit `setup`.
+This command downloads, verifies the complete immutable launcher, prompts for the
+sharing password, starts a detached scan and removes the temporary download.
+There is no manual pre-download step. Copy the entire block into the host terminal:
 
-Current source archive SHA256: `958889b0b1d834e4444ff00656a727280eec239dd1f6aa017504a2be2eb8cf57`.
-Launcher SHA256: `5cf3edd826dd9007b6c54a55f9ab979f4065aae96fac695bd859b61e4d9d1a41`.
+```bash
+bash -s -- inspect --deep --detach <<'NSI_LAUNCH'
+set -euo pipefail
+nsi_file=$(mktemp /tmp/nsi-launch.XXXXXXXX)
+trap 'rm -f -- "$nsi_file"' EXIT
+nsi_url="https://raw.githubusercontent.com/MachoDrone/nosana-security-inspector-launcher/b9169e026cca33d16889b6fa60ef0fc8df433175/releases/0.1.0-dev.2/launch.sh"
+if command -v curl >/dev/null 2>&1; then
+  curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 10 --max-time 180 "$nsi_url" -o "$nsi_file"
+else
+  wget --https-only --timeout=30 --tries=1 -qO "$nsi_file" "$nsi_url"
+fi
+printf '%s  %s\n' "e3fa85d54057d4afaf999f7c9717f6eb9dceb1ecbc481fb0071f99970375d88b" "$nsi_file" | sha256sum --check --status
+bash "$nsi_file" "$@"
+NSI_LAUNCH
+```
+
+For source review, replace `inspect --deep --detach` on the first line with
+`--show-source`. For progress, use `status`; for run history, `list-runs`.
+The launcher prompts through the terminal unless `NSI_PASSWORD` is already set;
+it removes that variable before launching the installed application.
+
+Detailed evidence is age-encrypted and stays on the inspected host. No automatic
+uploads, job interruptions, reboots, host package installations or hook enrollment
+occur. Lifecycle enrollment requires separate explicit `setup`. Deep acquisition
+skips unsupported/missing privacy or exact-symbol prerequisites and reports them.
+
+Source archive SHA256: `6414145aaabb0bcc3d444899655770303ceea38731466f16c70f6f392d156260`.
+Launcher SHA256: `e3fa85d54057d4afaf999f7c9717f6eb9dceb1ecbc481fb0071f99970375d88b`.
+Launcher size: **16,729,272 bytes**.
+[Build metadata](releases/0.1.0-dev.2/build.json).
+
+No sharing password, private recovery identity, plaintext application archive or
+private host notes are published here. Previous immutable releases remain available
+for traceability; use the version pinned above for new runs.
