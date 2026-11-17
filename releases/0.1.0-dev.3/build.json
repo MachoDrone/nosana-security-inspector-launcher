@@ -1,0 +1,20 @@
+{
+  "release_sha256": "566fc9f88d040c71da6ac552b8357a33c0406702a5d2037485141d1f13d3b4c4",
+  "launcher_sha256": "95cc5749bae28c1befc8108192b794177de392df2d99c617596ad28373c75904",
+  "launcher_bytes": 16730752,
+  "release_bytes": 11673365,
+  "files": 531,
+  "version": "0.1.0-dev.3",
+  "maturity": "experimental",
+  "validation": {
+    "tests": 193,
+    "test_seconds": 32.254,
+    "gate_seconds": 32.532,
+    "frozen_inputs": 552,
+    "snapshot_sha256": "d79a28be1f5e36360bc66b21498b58796af2b1681116ee7eee1bf8fc6c5e0d29",
+    "source_archive_reproducible": true,
+    "known_positive_rootkit_validated": false,
+    "parallel_workers_max": 2
+  },
+  "private_source_commit": "6c913062fcc259d81c23a76ef6eee2e65b309f0a"
+}
