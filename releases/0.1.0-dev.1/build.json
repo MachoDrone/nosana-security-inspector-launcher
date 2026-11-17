@@ -1,0 +1,11 @@
+{
+  "release_sha256": "958889b0b1d834e4444ff00656a727280eec239dd1f6aa017504a2be2eb8cf57",
+  "launcher_sha256": "5cf3edd826dd9007b6c54a55f9ab979f4065aae96fac695bd859b61e4d9d1a41",
+  "launcher_bytes": 8422840,
+  "release_bytes": 5443951,
+  "files": 38,
+  "version": "0.1.0-dev.1",
+  "maturity": "experimental",
+  "source_repository": "https://github.com/MachoDrone/nosana-security-inspector",
+  "source_commit": "5fdea25"
+}
